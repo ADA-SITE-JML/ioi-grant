@@ -1,0 +1,19 @@
+Insights:
+1. 2019, day 1
+SELECT t.id as task, 
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 05:00:00' AND s.timestamp < timestamp '2019-08-06 05:30:00' ) AS i1,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 05:30:00' AND s.timestamp < timestamp '2019-08-06 06:00:00' ) AS i2,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 06:00:00' AND s.timestamp < timestamp '2019-08-06 06:30:00' ) AS i3,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 06:30:00' AND s.timestamp < timestamp '2019-08-06 07:00:00' ) AS i4,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 07:00:00' AND s.timestamp < timestamp '2019-08-06 07:30:00' ) AS i5,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 07:30:00' AND s.timestamp < timestamp '2019-08-06 08:00:00' ) AS i6,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 08:00:00' AND s.timestamp < timestamp '2019-08-06 08:30:00' ) AS i7,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 08:30:00' AND s.timestamp < timestamp '2019-08-06 09:00:00' ) AS i8,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 09:00:00' AND s.timestamp < timestamp '2019-08-06 09:30:00' ) AS i9,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 09:30:00' AND s.timestamp < timestamp '2019-08-06 010:00:00' ) AS i10
+FROM submissions s 
+INNER JOIN (SELECT tasks.id FROM tasks WHERE contest_id = 2) t 
+ON s.task_id = t.id 
+WHERE EXTRACT(DAY FROM s.timestamp) = 6 
+AND s.official = TRUE 
+GROUP BY task;
