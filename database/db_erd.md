@@ -14,18 +14,14 @@ CMS Database Schema
 
 * Contest Setup Tables
     - [Contests Table](#contests-table)
+    - [Print Jobs Table](#print-jobs-table)
     * Communication Tables
         - [Announcements Table](#announcements-table)
-        - [Attachements Table](#attachements-table)
         - [Messages Table](#messages-table)
-        - [Print Jobs Table](#print-jobs-table)
-        - [Files Table](#messages-table)
-            - [User Test Files Table](#user-test-files-table)
-        - [Participations Table](#participations-table)
     * Questions Tables
         - [Datasets Table](#datasets-table)
         - [Questions Table](#questions-table)
-        - [Statements Table](#messages-table)
+        - [Statements Table](#statements-table)
         - [Tasks Table](#tasks-table)
         - [Testcases Table](#testcases-table)
         - [User Tests Table](#user-tests-table)
@@ -33,11 +29,14 @@ CMS Database Schema
         - [Executables Table](#executables-table)
             - [User Test Executables Table](#user-test-executables-table)
         - [Submissions Table](#submissions-table)
-        - [Files Table](#messages-table)
+        - [Files Table](#files-table)
+            - [User Test Files Table](#user-test-files-table)
+        - [Attachements Table](#attachements-table)
     * Results Tables
         - [Evaluations Table](#evaluations-table)
         - [Submission Results Table](#submission-results-table)
         - [User Test Results Table](#user-test-results-table)
+        - [Participations Table](#participations-table)
 
 
 # Users Table
@@ -531,7 +530,7 @@ CMS Database Schema
     +----------------------------------------------------------------------------------------------------+
 
 
-# Fs Objects
+# Fs Objects Table
 
 ## Description
 > This table stores the log of object-related events.
