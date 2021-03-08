@@ -55,7 +55,6 @@ CMS Database Schema
 |timezone| Timezone of the user|
 |preferred_languages| The languages that the user knows|
 
-## Diagram
     +----------------------------------------------------------------------------------------------------+
     |                                              Table Users                                           |
     +----------------------------------------------------------------------------------------------------+
