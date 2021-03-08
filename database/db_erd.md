@@ -1,20 +1,20 @@
 CMS Database Schema
 ===================
 
-- CMS Setup Tables
+* CMS Setup Tables
 	- [Fs Objects Table](#fs-objects-table)
 	- [Tokens Table](#tokens-table)
 
-- People Tables
+* People Tables
 	- [Users Table](#users-table)
 	- [Admins Table](#admins-table)
 	- [Teams Table](#teams-table)
 	- [Managers Table](#managers-table)
 	    - [User Test Managers Table](#user-test-managers-table)
 
-- Contest Setup Tables
+* Contest Setup Tables
     - [Contests Table](#contests-table)
-    - Communication Tables
+    * Communication Tables
         - [Announcements Table](#announcements-table)
         - [Attachements Table](#attachements-table)
         - [Messages Table](#messages-table)
@@ -22,18 +22,18 @@ CMS Database Schema
         - [Files Table](#messages-table)
             - [User Test Files Table](#user-test-files-table)
         - [Participations Table](#participations-table)
-    - Questions Tables
+    * Questions Tables
         - [Datasets Table](#datasets-table)
         - [Questions Table](#questions-table)
         - [Statements Table](#messages-table)
         - [Tasks Table](#tasks-table)
         - [Testcases Table](#testcases-table)
-    - Submission Tables
+    * Submission Tables
         - [Executables Table](#executables-table)
             - [User Test Executables Table](#user-test-executables-table)
         - [Submissions Table](#submissions-table)
         - [Files Table](#messages-table)
-    - Results Tables
+    * Results Tables
         - [Evaluations Table](#evaluations-table)
         - [Submission Results Table](#submission-results-table)
         - [User Test Results Table](#user-test-results-table)
@@ -55,28 +55,29 @@ CMS Database Schema
 |timezone| Timezone of the user|
 |preferred_languages| The languages that the user knows|
 
-+----------------------------------------------------------------------------------------------------+
-|                                              Table Users                                           |
-+----------------------------------------------------------------------------------------------------+
-|      Column                   |            Type                          | Nullable                |
-|-------------------------------+-------------------------------------------+------------------------+
-| id(auto)                      | integer                                  | not null                |
-| first_name                    | character varying                        | not null                |
-| last_name                     | character varying                        | not null                |
-| username                      | character varying                        | not null                |
-| password                      | character varying                        | not null                |
-| email                         | character varying                        |                         |
-| timezone                      | character varying                        |                         |
-| preferred_languages           | character varying[]                      | not null                |
-+----------------------------------------------------------------------------------------------------+
-|                                              RELATIONS                                             |
-+-----------------------+-----------------------------+-----------------------+----------------------+
-|    PRIMARY KEY        |        FOREIGN KEY          |    REFERENCES         |     CONSTRAINT       |
-+-----------------------|-----------------------------|----------------------------------------------+
-| id                    |                             |                       |                      |
-+-----------------------|-----------------------------|----------------------------------------------+
-|                       |                             |                       |  UNIQUE(username)    |
-+----------------------------------------------------------------------------------------------------+
+### Entity
+    +----------------------------------------------------------------------------------------------------+
+    |                                              Table Users                                           |
+    +----------------------------------------------------------------------------------------------------+
+    |      Column                   |            Type                          | Nullable                |
+    |-------------------------------+-------------------------------------------+------------------------+
+    | id(auto)                      | integer                                  | not null                |
+    | first_name                    | character varying                        | not null                |
+    | last_name                     | character varying                        | not null                |
+    | username                      | character varying                        | not null                |
+    | password                      | character varying                        | not null                |
+    | email                         | character varying                        |                         |
+    | timezone                      | character varying                        |                         |
+    | preferred_languages           | character varying[]                      | not null                |
+    +----------------------------------------------------------------------------------------------------+
+    |                                              RELATIONS                                             |
+    +-----------------------+-----------------------------+-----------------------+----------------------+
+    |    PRIMARY KEY        |        FOREIGN KEY          |    REFERENCES         |     CONSTRAINT       |
+    +-----------------------|-----------------------------|----------------------------------------------+
+    | id                    |                             |                       |                      |
+    +-----------------------|-----------------------------|----------------------------------------------+
+    |                       |                             |                       |  UNIQUE(username)    |
+    +----------------------------------------------------------------------------------------------------+
 
 
 
