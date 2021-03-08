@@ -41,6 +41,21 @@ CMS Database Schema
 
 # Users Table
 
+## Description
+This table stores the list of all entered users. Adding a user to CMS does not guarantee the access to the contests. To grant an access to the contests, user shall exists in a participation tableŞ
+    
+|Attribute|Description|
+|:---:|:---:|
+|id| A unique ID of the user|
+|first_name| First name|
+|last_name| Last name|
+|username| Login name of the user. In IOI, it's usually associated with the country code. Example: 'AZE1', 'ITA3' and 'SWE2'|
+|password| A password of the user is stored here. It can be plain or encrypted text|
+|email| Email of the user|
+|timezone| Timezone of the user|
+|preferred_languages| The languages that the user knows|
+
+## Diagram
     +----------------------------------------------------------------------------------------------------+
     |                                              Table Users                                           |
     +----------------------------------------------------------------------------------------------------+
@@ -64,13 +79,7 @@ CMS Database Schema
     |                       |                             |                       |  UNIQUE(username)    |
     +----------------------------------------------------------------------------------------------------+
 
-## Description
-This table stores the list of all entered users. Adding a user to CMS does not guarantee the access to the contests. To grant an access to the contests, user shall exists in a participation tableŞ
-    
-|Column 1|Column 2|Column 3|
-|:---:|:---:|:---:|
-|Row 1 Column1| Row 1 Column 2| Row 1 Column 3|
-|Row 2 Column1| Row 2 Column 2| Row 2 Column 3|
+
 
 
 
