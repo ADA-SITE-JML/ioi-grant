@@ -10,7 +10,7 @@ COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 07:30:00' AND s.time
 COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 08:00:00' AND s.timestamp < timestamp '2019-08-06 08:30:00' ) AS i7,
 COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 08:30:00' AND s.timestamp < timestamp '2019-08-06 09:00:00' ) AS i8,
 COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 09:00:00' AND s.timestamp < timestamp '2019-08-06 09:30:00' ) AS i9,
-COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 09:30:00' AND s.timestamp < timestamp '2019-08-06 010:00:00' ) AS i10
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-06 09:30:00' AND s.timestamp < timestamp '2019-08-06 10:00:00' ) AS i10
 FROM submissions s 
 INNER JOIN (SELECT tasks.id, tasks.name FROM tasks WHERE contest_id = 2) t 
 ON s.task_id = t.id 
@@ -29,7 +29,7 @@ COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 07:30:00' AND sub
 COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 08:00:00' AND subs.timestamp < timestamp '2019-08-06 08:30:00' ) AS i7,
 COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 08:30:00' AND subs.timestamp < timestamp '2019-08-06 09:00:00' ) AS i8,
 COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 09:00:00' AND subs.timestamp < timestamp '2019-08-06 09:30:00' ) AS i9,
-COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 09:30:00' AND subs.timestamp < timestamp '2019-08-06 010:00:00' ) AS i10
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 09:30:00' AND subs.timestamp < timestamp '2019-08-06 10:00:00' ) AS i10
 FROM 
 (SELECT s.id as submission_id, t.name as task, MAX(res.score) score, s.timestamp
 FROM submissions s 
@@ -55,7 +55,7 @@ COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 07:30:00' AND sub
 COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 08:00:00' AND subs.timestamp < timestamp '2019-08-06 08:30:00' ) AS i7,
 COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 08:30:00' AND subs.timestamp < timestamp '2019-08-06 09:00:00' ) AS i8,
 COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 09:00:00' AND subs.timestamp < timestamp '2019-08-06 09:30:00' ) AS i9,
-COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 09:30:00' AND subs.timestamp < timestamp '2019-08-06 010:00:00' ) AS i10
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 09:30:00' AND subs.timestamp < timestamp '2019-08-06 10:00:00' ) AS i10
 FROM 
 (SELECT s.id as submission_id, t.name as task, MAX(res.score) score, s.timestamp
 FROM submissions s 
@@ -81,7 +81,7 @@ COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 07:30:00' AND sub
 COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 08:00:00' AND subs.timestamp < timestamp '2019-08-06 08:30:00' ) AS i7,
 COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 08:30:00' AND subs.timestamp < timestamp '2019-08-06 09:00:00' ) AS i8,
 COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 09:00:00' AND subs.timestamp < timestamp '2019-08-06 09:30:00' ) AS i9,
-COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 09:30:00' AND subs.timestamp < timestamp '2019-08-06 010:00:00' ) AS i10
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-06 09:30:00' AND subs.timestamp < timestamp '2019-08-06 10:00:00' ) AS i10
 FROM 
 (SELECT s.id as submission_id, t.name as task, MAX(res.score) score, s.timestamp
 FROM submissions s 
