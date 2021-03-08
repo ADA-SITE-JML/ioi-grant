@@ -1,6 +1,8 @@
 CMS Database Schema
 ===================
 
+[![Foo](http://www.google.com.au/images/nav_logo7.png)](http://google.com.au/)
+
 * CMS Setup Tables
 	- [Fs Objects Table](#fs-objects-table)
 	- [Tokens Table](#tokens-table)
@@ -79,10 +81,6 @@ CMS Database Schema
     |                       |                             |                       |  UNIQUE(username)    |
     +----------------------------------------------------------------------------------------------------+
 
-
-***** 
-
-
 # Admins Table
 
 ## Description
@@ -118,12 +116,7 @@ CMS Database Schema
     |    PRIMARY KEY        |        FOREIGN KEY          |    REFERENCES         |     CONSTRAINT       |
     +-----------------------|-----------------------------|----------------------------------------------+
     | id                    |                             |                       |                      |
-    +----------------------------------------------------------------------------------------------------+
-
-***** 
-***** 
-***** 
-***** 
+    +----------------------------------------------------------------------------------------------------+ 
 
 # Announcements Table
 
