@@ -65,10 +65,13 @@ CMS Database Schema
     +----------------------------------------------------------------------------------------------------+
 
 ## Description
-This table stores the list of all entered users. Adding a user to CMS does not guarantee the access to the contests. To grant an access to the contests, user shall exists in a participation tableŞ
-### Details:
-    - id  -  A unique ID of the user
-    - first_name -       
+    This table stores the list of all entered users. Adding a user to CMS does not guarantee the access to the contests. To grant an access to the contests, user shall exists in a participation tableŞ
+    
+    |Column 1|Column 2|Column 3|
+    |:---:|:---:|:---:|
+    |Row 1 Column1| Row 1 Column 2| Row 1 Column 3|
+    |Row 2 Column1| Row 2 Column 2| Row 2 Column 3|
+
 
 
 # Admins Table
