@@ -1,7 +1,7 @@
 CMS Database Schema
 ===================
 
-[![ERD](https://github.com/ADA-SITE-JML/ioi-grant/blob/master/database/images/click_here_cropped_2.png)](https://github.com/ADA-SITE-JML/ioi-grant/blob/master/database/images/erd_cms.png)
+[![ERD](https://github.com/ADA-SITE-JML/ioi-grant/blob/master/database/images/click_here_cropped.png)](https://github.com/ADA-SITE-JML/ioi-grant/blob/master/database/images/erd_cms.png)
 
 * CMS Setup Tables
 	- [Fs Objects Table](#fs-objects-table)
