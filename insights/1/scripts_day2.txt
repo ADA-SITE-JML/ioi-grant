@@ -1,0 +1,105 @@
+Insights 1 - 2019 DAY 2:
+
+day 2:
+start                         | 2019-08-08 05:20:00
+stop                          | 2019-08-08 10:33:50
+
+1. submission count for each task for each 30 min interval
+SELECT t.name as task, 
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-08 05:20:00' AND s.timestamp < timestamp '2019-08-08 05:50:00' ) AS i1,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-08 05:50:00' AND s.timestamp < timestamp '2019-08-08 06:20:00' ) AS i2,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-08 06:20:00' AND s.timestamp < timestamp '2019-08-08 06:50:00' ) AS i3,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-08 06:50:00' AND s.timestamp < timestamp '2019-08-08 07:20:00' ) AS i4,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-08 07:20:00' AND s.timestamp < timestamp '2019-08-08 07:50:00' ) AS i5,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-08 07:50:00' AND s.timestamp < timestamp '2019-08-08 08:20:00' ) AS i6,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-08 08:20:00' AND s.timestamp < timestamp '2019-08-08 08:50:00' ) AS i7,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-08 08:50:00' AND s.timestamp < timestamp '2019-08-08 09:20:00' ) AS i8,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-08 09:20:00' AND s.timestamp < timestamp '2019-08-08 09:50:00' ) AS i9,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-08 09:50:00' AND s.timestamp < timestamp '2019-08-08 010:20:00' ) AS i10,
+COUNT(*) FILTER (WHERE s.timestamp >= timestamp '2019-08-08 010:20:00' AND s.timestamp < timestamp '2019-08-08 010:33:50' ) AS i11
+FROM submissions s 
+INNER JOIN (SELECT tasks.id, tasks.name FROM tasks WHERE contest_id = 1) t 
+ON s.task_id = t.id 
+WHERE EXTRACT(DAY FROM s.timestamp) = 8 
+AND s.official = TRUE 
+GROUP BY task;
+
+2.submission score > 0 count for each task for each 30 min interval
+SELECT subs.task, 
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 05:20:00' AND subs.timestamp < timestamp '2019-08-08 05:50:00' ) AS i1,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 05:50:00' AND subs.timestamp < timestamp '2019-08-08 06:20:00' ) AS i2,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 06:20:00' AND subs.timestamp < timestamp '2019-08-08 06:50:00' ) AS i3,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 06:50:00' AND subs.timestamp < timestamp '2019-08-08 07:20:00' ) AS i4,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 07:20:00' AND subs.timestamp < timestamp '2019-08-08 07:50:00' ) AS i5,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 07:50:00' AND subs.timestamp < timestamp '2019-08-08 08:20:00' ) AS i6,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 08:20:00' AND subs.timestamp < timestamp '2019-08-08 08:50:00' ) AS i7,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 08:50:00' AND subs.timestamp < timestamp '2019-08-08 09:20:00' ) AS i8,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 09:20:00' AND subs.timestamp < timestamp '2019-08-08 09:50:00' ) AS i9,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 09:50:00' AND subs.timestamp < timestamp '2019-08-08 010:20:00' ) AS i10,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 010:20:00' AND subs.timestamp < timestamp '2019-08-08 010:33:50' ) AS i11
+FROM 
+(SELECT s.id as submission_id, t.name as task, MAX(res.score) score, s.timestamp
+FROM submissions s 
+INNER JOIN (SELECT tasks.id, tasks.name FROM tasks WHERE contest_id = 1) t 
+ON s.task_id = t.id 
+INNER JOIN submission_results res
+ON s.id = res.submission_id
+WHERE EXTRACT(DAY FROM s.timestamp) = 8 
+AND s.official = TRUE
+AND res.score > 0
+GROUP BY s.id, t.name) as subs
+GROUP BY task;
+
+
+3.submission score > 20 count for each task for each 30 min interval
+SELECT subs.task, 
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 05:20:00' AND subs.timestamp < timestamp '2019-08-08 05:50:00' ) AS i1,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 05:50:00' AND subs.timestamp < timestamp '2019-08-08 06:20:00' ) AS i2,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 06:20:00' AND subs.timestamp < timestamp '2019-08-08 06:50:00' ) AS i3,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 06:50:00' AND subs.timestamp < timestamp '2019-08-08 07:20:00' ) AS i4,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 07:20:00' AND subs.timestamp < timestamp '2019-08-08 07:50:00' ) AS i5,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 07:50:00' AND subs.timestamp < timestamp '2019-08-08 08:20:00' ) AS i6,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 08:20:00' AND subs.timestamp < timestamp '2019-08-08 08:50:00' ) AS i7,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 08:50:00' AND subs.timestamp < timestamp '2019-08-08 09:20:00' ) AS i8,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 09:20:00' AND subs.timestamp < timestamp '2019-08-08 09:50:00' ) AS i9,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 09:50:00' AND subs.timestamp < timestamp '2019-08-08 010:20:00' ) AS i10,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 010:20:00' AND subs.timestamp < timestamp '2019-08-08 010:33:50' ) AS i11
+FROM 
+(SELECT s.id as submission_id, t.name as task, MAX(res.score) score, s.timestamp
+FROM submissions s 
+INNER JOIN (SELECT tasks.id, tasks.name FROM tasks WHERE contest_id = 1) t 
+ON s.task_id = t.id 
+INNER JOIN submission_results res
+ON s.id = res.submission_id
+WHERE EXTRACT(DAY FROM s.timestamp) = 8 
+AND s.official = TRUE
+AND res.score > 20
+GROUP BY s.id, t.name) as subs
+GROUP BY task;
+
+
+2.submission score > 50 count for each task for each 30 min interval
+SELECT subs.task, 
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 05:20:00' AND subs.timestamp < timestamp '2019-08-08 05:50:00' ) AS i1,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 05:50:00' AND subs.timestamp < timestamp '2019-08-08 06:20:00' ) AS i2,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 06:20:00' AND subs.timestamp < timestamp '2019-08-08 06:50:00' ) AS i3,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 06:50:00' AND subs.timestamp < timestamp '2019-08-08 07:20:00' ) AS i4,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 07:20:00' AND subs.timestamp < timestamp '2019-08-08 07:50:00' ) AS i5,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 07:50:00' AND subs.timestamp < timestamp '2019-08-08 08:20:00' ) AS i6,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 08:20:00' AND subs.timestamp < timestamp '2019-08-08 08:50:00' ) AS i7,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 08:50:00' AND subs.timestamp < timestamp '2019-08-08 09:20:00' ) AS i8,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 09:20:00' AND subs.timestamp < timestamp '2019-08-08 09:50:00' ) AS i9,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 09:50:00' AND subs.timestamp < timestamp '2019-08-08 010:20:00' ) AS i10,
+COUNT(*) FILTER (WHERE subs.timestamp >= timestamp '2019-08-08 010:20:00' AND subs.timestamp < timestamp '2019-08-08 010:33:50' ) AS i11
+FROM 
+(SELECT s.id as submission_id, t.name as task, MAX(res.score) score, s.timestamp
+FROM submissions s 
+INNER JOIN (SELECT tasks.id, tasks.name FROM tasks WHERE contest_id = 1) t 
+ON s.task_id = t.id 
+INNER JOIN submission_results res
+ON s.id = res.submission_id
+WHERE EXTRACT(DAY FROM s.timestamp) = 8 
+AND s.official = TRUE
+AND res.score > 50
+GROUP BY s.id, t.name) as subs
+GROUP BY task;
