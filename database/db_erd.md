@@ -28,6 +28,7 @@ CMS Database Schema
         - [Statements Table](#messages-table)
         - [Tasks Table](#tasks-table)
         - [Testcases Table](#testcases-table)
+        - [User Tests Table](#user-tests-table)
     * Submission Tables
         - [Executables Table](#executables-table)
             - [User Test Executables Table](#user-test-executables-table)
