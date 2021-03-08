@@ -1,7 +1,7 @@
 CMS Database Schema
 ===================
 
-[![Foo](http://www.google.com.au/images/nav_logo7.png)](http://google.com.au/)
+[![ERD](https://github.com/ADA-SITE-JML/ioi-grant/blob/master/database/images/click_here_cropped.png)](https://github.com/ADA-SITE-JML/ioi-grant/blob/master/database/images/erd_cms.png)
 
 * CMS Setup Tables
 	- [Fs Objects Table](#fs-objects-table)
