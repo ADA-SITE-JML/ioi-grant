@@ -4,13 +4,11 @@ day 2:
 start                         | 2019-08-08 05:20:00
 stop                          | 2019-08-08 10:33:50
 
+time_grp formula -> date + hour(time - 20) + 20 + (minute(time - 20) / 30) * 30
+
 1. submission count for each task for each 30 min interval
 SELECT 
-CASE 
-WHEN ((date_part('minute', timestamp)::integer / 20::integer) + (date_part('minute', timestamp)::integer / 50::integer)) = 3 THEN date_trunc('hour', timestamp) + ((50::integer) || ' minutes')::interval
-WHEN ((date_part('minute', timestamp)::integer / 20::integer) + (date_part('minute', timestamp)::integer / 50::integer)) = 0 THEN date_trunc('hour', timestamp) + ((-10::integer) || ' minutes')::interval
-ELSE date_trunc('hour', timestamp) + ((20::integer) || ' minutes')::interval
-END as time_grp, 
+date_trunc('days', timestamp) + (date_part('hour', timestamp::time - '20 min'::interval) || ' hour')::interval + '20 min'::interval + (((date_part('minute', timestamp::time - '20 min'::interval)::integer / 30::integer)*30::integer) || ' minutes')::interval as time_grp, 
 (select name from tasks where id = task_id), 
 count(*)
 FROM submissions
@@ -23,11 +21,7 @@ ORDER BY time_grp;
 
 2.submission score > 0 count for each task for each 30 min interval
 SELECT 
-CASE 
-WHEN ((date_part('minute', timestamp)::integer / 20::integer) + (date_part('minute', timestamp)::integer / 50::integer)) = 3 THEN date_trunc('hour', timestamp) + ((50::integer) || ' minutes')::interval
-WHEN ((date_part('minute', timestamp)::integer / 20::integer) + (date_part('minute', timestamp)::integer / 50::integer)) = 0 THEN date_trunc('hour', timestamp) + ((-10::integer) || ' minutes')::interval
-ELSE date_trunc('hour', timestamp) + ((20::integer) || ' minutes')::interval
-END AS time_grp, 
+date_trunc('days', timestamp) + (date_part('hour', timestamp::time - '20 min'::interval) || ' hour')::interval + '20 min'::interval + (((date_part('minute', timestamp::time - '20 min'::interval)::integer / 30::integer)*30::integer) || ' minutes')::interval as time_grp, 
 (select name from tasks where id = subs.task_id), 
 count(*) FILTER(WHERE subs.score > 0)
 FROM
@@ -46,11 +40,7 @@ ORDER BY time_grp;
 
 3.submission score > 20 count for each task for each 30 min interval
 SELECT 
-CASE 
-WHEN ((date_part('minute', timestamp)::integer / 20::integer) + (date_part('minute', timestamp)::integer / 50::integer)) = 3 THEN date_trunc('hour', timestamp) + ((50::integer) || ' minutes')::interval
-WHEN ((date_part('minute', timestamp)::integer / 20::integer) + (date_part('minute', timestamp)::integer / 50::integer)) = 0 THEN date_trunc('hour', timestamp) + ((-10::integer) || ' minutes')::interval
-ELSE date_trunc('hour', timestamp) + ((20::integer) || ' minutes')::interval
-END AS time_grp, 
+date_trunc('days', timestamp) + (date_part('hour', timestamp::time - '20 min'::interval) || ' hour')::interval + '20 min'::interval + (((date_part('minute', timestamp::time - '20 min'::interval)::integer / 30::integer)*30::integer) || ' minutes')::interval as time_grp, 
 (select name from tasks where id = subs.task_id), 
 count(*) FILTER(WHERE subs.score > 20)
 FROM
@@ -69,11 +59,7 @@ ORDER BY time_grp;
 
 2.submission score > 50 count for each task for each 30 min interval
 SELECT 
-CASE 
-WHEN ((date_part('minute', timestamp)::integer / 20::integer) + (date_part('minute', timestamp)::integer / 50::integer)) = 3 THEN date_trunc('hour', timestamp) + ((50::integer) || ' minutes')::interval
-WHEN ((date_part('minute', timestamp)::integer / 20::integer) + (date_part('minute', timestamp)::integer / 50::integer)) = 0 THEN date_trunc('hour', timestamp) + ((-10::integer) || ' minutes')::interval
-ELSE date_trunc('hour', timestamp) + ((20::integer) || ' minutes')::interval
-END AS time_grp, 
+date_trunc('days', timestamp) + (date_part('hour', timestamp::time - '20 min'::interval) || ' hour')::interval + '20 min'::interval + (((date_part('minute', timestamp::time - '20 min'::interval)::integer / 30::integer)*30::integer) || ' minutes')::interval as time_grp,
 (select name from tasks where id = subs.task_id), 
 count(*) FILTER(WHERE subs.score > 50)
 FROM
