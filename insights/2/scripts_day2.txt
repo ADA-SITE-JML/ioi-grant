@@ -1,0 +1,20 @@
+Insights 2 - 2019 DAY 2:
+1. contestant request count for each type of request for each 30 min interval
+SELECT 
+date_trunc('days', q.question_timestamp) + (date_part('hour', q.question_timestamp::time - '20 min'::interval) || ' hour')::interval + '20 min'::interval + (((date_part('minute', q.question_timestamp::time - '20 min'::interval)::integer / 30::integer)*30::integer) || ' minutes')::interval as time_grp,
+unnest(regexp_matches(q.subject, '#(\w{1,})', 'g')) as tags,
+count(*)
+FROM 
+(SELECT id, subject, question_timestamp
+FROM questions 
+WHERE subject 
+LIKE '%#%'
+UNION
+SELECT id, REGEXP_REPLACE(subject, '.*', '#Clarifications') as subject, question_timestamp
+FROM questions 
+WHERE subject 
+NOT LIKE '%#%') as q
+WHERE q.question_timestamp >= (SELECT start FROM contests WHERE id = 1)
+AND q.question_timestamp <= (SELECT stop FROM contests WHERE id = 1)
+GROUP BY time_grp, tags
+ORDER BY time_grp;
