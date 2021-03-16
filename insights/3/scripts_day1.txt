@@ -1,10 +1,34 @@
 Insights 3 - 2019 DAY 1:
 
-===================================================================================================================================
-
-SELECT s.id as submission_id, s.participation_id, MAX(res.score) score, s.timestamp, s.task_id, (select name from tasks where id = s.task_id)
+Finds how much time gold medalists spend till switching to each task.
+===================================================================
+SELECT
+participation_id,
+user_id,
+name AS task_name,
+first_begin_ts,
+count AS consecutive_submission_count,
+first_begin_ts - lag(first_begin_ts) OVER (PARTITION BY participation_id ORDER BY first_begin_ts) AS time_spent_till_switching_to_this_task
+FROM
+(SELECT 
+participation_id,
+min(user_id) AS user_id,
+min(name) AS name,
+min(timestamp) AS first_begin_ts,
+count(*)
+FROM
+(SELECT t1.*,
+SUM(group_flag) over (PARTITION BY participation_id ORDER BY timestamp) as grp
+FROM
+(SELECT *,
+CASE
+WHEN lag(name) OVER (PARTITION BY participation_id ORDER BY timestamp) = name THEN null
+ELSE 1
+END AS group_flag
+FROM
+(SELECT s.id as submission_id, s.participation_id, min(p.user_id) AS user_id, MAX(res.score) score, s.timestamp, s.task_id, (select name from tasks where id = s.task_id)
 FROM submissions s 
-INNER JOIN (SELECT p.id AS participation_id FROM participations p INNER JOIN users u ON p.user_id = u.id WHERE u.medals = 1 and u.id = 106) p
+INNER JOIN (SELECT p.id AS participation_id, u.id AS user_id FROM participations p INNER JOIN users u ON p.user_id = u.id WHERE u.medals = 1) p
 ON s.participation_id = p.participation_id
 INNER JOIN submission_results res
 ON s.id = res.submission_id
@@ -12,34 +36,18 @@ WHERE s.timestamp >= (SELECT start FROM contests WHERE id = 2)
 AND s.timestamp <= (SELECT stop FROM contests WHERE id = 2)
 AND s.official = TRUE
 GROUP BY s.id
-ORDER BY s.timestamp;
+ORDER BY s.timestamp) subs) t1) t2
+GROUP BY grp, participation_id
+ORDER BY user_id) t3;
+===========================================================
+Example result for user with id 106.
 
-WITH subs AS (
-SELECT s.id as submission_id, s.participation_id, MAX(res.score) score, s.timestamp, s.task_id, (select name from tasks where id = s.task_id)
-FROM submissions s 
-INNER JOIN (SELECT p.id AS participation_id FROM participations p INNER JOIN users u ON p.user_id = u.id WHERE u.medals = 1 and u.id = 106) p
-ON s.participation_id = p.participation_id
-INNER JOIN submission_results res
-ON s.id = res.submission_id
-WHERE s.timestamp >= (SELECT start FROM contests WHERE id = 2)
-AND s.timestamp <= (SELECT stop FROM contests WHERE id = 2)
-AND s.official = TRUE
-GROUP BY s.id
-ORDER BY s.timestamp
-)
-SELECT 
-submission_id, 
-score, 
-timestamp, 
-name,
-timestamp - LAG(timestamp,1) OVER (
-PARTITION BY participation_id
-ORDER BY timestamp
-) time_diff_with_prev_submission
-FROM subs;
-
-
-
-
+ participation_id | user_id | task_name |       first_begin_ts       | consecutive_submission_count | time_spent_till_switching_to_this_task
+------------------+---------+-----------+----------------------------+------------------------------+----------------------------------------
+              209 |     106 | shoes     | 2019-08-06 05:12:15.364406 |                            3 |
+              209 |     106 | rect      | 2019-08-06 05:59:34.906601 |                            3 | 00:47:19.542195
+              209 |     106 | split     | 2019-08-06 06:26:27.859885 |                            6 | 00:26:52.953284
+              209 |     106 | rect      | 2019-08-06 07:32:44.409142 |                           12 | 01:06:16.549257
+              209 |     106 | shoes     | 2019-08-06 09:21:22.838076 |                            1 | 01:48:38.428934
 
 
