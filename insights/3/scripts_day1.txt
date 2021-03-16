@@ -6,15 +6,15 @@ SELECT
 participation_id,
 user_id,
 name AS task_name,
-first_begin_ts,
+last_submission_ts,
 count AS consecutive_submission_count,
-first_begin_ts - lag(first_begin_ts) OVER (PARTITION BY participation_id ORDER BY first_begin_ts) AS time_spent_till_switching_to_this_task
+lag(last_submission_ts) OVER (PARTITION BY participation_id ORDER BY last_submission_ts) - lag(last_submission_ts,2,(SELECT start FROM contests WHERE id = 2)) OVER (PARTITION BY participation_id ORDER BY last_submission_ts) AS time_spent_till_switching_to_this_task
 FROM
 (SELECT 
 participation_id,
 min(user_id) AS user_id,
 min(name) AS name,
-min(timestamp) AS first_begin_ts,
+max(timestamp) AS last_submission_ts,
 count(*)
 FROM
 (SELECT t1.*,
@@ -42,12 +42,13 @@ ORDER BY user_id) t3;
 ===========================================================
 Example result for user with id 106.
 
- participation_id | user_id | task_name |       first_begin_ts       | consecutive_submission_count | time_spent_till_switching_to_this_task
+ participation_id | user_id | task_name |       last_submission_ts      | consecutive_submission_count | time_spent_till_switching_to_this_task
 ------------------+---------+-----------+----------------------------+------------------------------+----------------------------------------
-              209 |     106 | shoes     | 2019-08-06 05:12:15.364406 |                            3 |
-              209 |     106 | rect      | 2019-08-06 05:59:34.906601 |                            3 | 00:47:19.542195
-              209 |     106 | split     | 2019-08-06 06:26:27.859885 |                            6 | 00:26:52.953284
-              209 |     106 | rect      | 2019-08-06 07:32:44.409142 |                           12 | 01:06:16.549257
-              209 |     106 | shoes     | 2019-08-06 09:21:22.838076 |                            1 | 01:48:38.428934
+              209 |     106 | shoes     | 2019-08-06 05:29:02.928639 |                            3 |
+              209 |     106 | rect      | 2019-08-06 06:02:45.456954 |                            3 | 00:29:02.928639
+              209 |     106 | split     | 2019-08-06 07:18:47.123361 |                            6 | 00:33:42.528315
+              209 |     106 | rect      | 2019-08-06 08:55:38.16714  |                           12 | 01:16:01.666407
+              209 |     106 | shoes     | 2019-08-06 09:21:22.838076 |                            1 | 01:36:51.043779
+
 
 
