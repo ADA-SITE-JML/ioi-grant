@@ -8,7 +8,7 @@ user_id,
 name AS task_name,
 last_submission_ts,
 count AS consecutive_submission_count,
-lag(last_submission_ts) OVER (PARTITION BY participation_id ORDER BY last_submission_ts) - lag(last_submission_ts,2,(SELECT start FROM contests WHERE id = 2)) OVER (PARTITION BY participation_id ORDER BY last_submission_ts) AS time_spent_till_switching_to_this_task
+lag(last_submission_ts,1,(SELECT start FROM contests WHERE id = 2)) OVER (PARTITION BY participation_id ORDER BY last_submission_ts) - lag(last_submission_ts,2,(SELECT start FROM contests WHERE id = 2)) OVER (PARTITION BY participation_id ORDER BY last_submission_ts) AS time_spent_till_switching_to_this_task
 FROM
 (SELECT 
 participation_id,
