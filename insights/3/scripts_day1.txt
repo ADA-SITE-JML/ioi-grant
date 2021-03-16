@@ -42,13 +42,14 @@ ORDER BY user_id) t3;
 ===========================================================
 Example result for user with id 106.
 
- participation_id | user_id | task_name |       last_submission_ts      | consecutive_submission_count | time_spent_till_switching_to_this_task
+ participation_id | user_id | task_name |     last_submission_ts     | consecutive_submission_count | time_spent_till_switching_to_this_task
 ------------------+---------+-----------+----------------------------+------------------------------+----------------------------------------
-              209 |     106 | shoes     | 2019-08-06 05:29:02.928639 |                            3 |
+              209 |     106 | shoes     | 2019-08-06 05:29:02.928639 |                            3 | 00:00:00
               209 |     106 | rect      | 2019-08-06 06:02:45.456954 |                            3 | 00:29:02.928639
               209 |     106 | split     | 2019-08-06 07:18:47.123361 |                            6 | 00:33:42.528315
               209 |     106 | rect      | 2019-08-06 08:55:38.16714  |                           12 | 01:16:01.666407
               209 |     106 | shoes     | 2019-08-06 09:21:22.838076 |                            1 | 01:36:51.043779
+
 
 
 
