@@ -1,20 +1,22 @@
-Insights 3 - 2019 DAY 1:
+dInsights 3 - 2019 DAY 1:
 
-Finds how much time gold medalists spend till switching to each task.
+Finds how much time each participant spend for each task before swithcing to another task.
 ===================================================================
 SELECT
 participation_id,
+medal,
 user_id,
 name AS task_name,
 last_submission_ts,
 count AS consecutive_submission_count,
-lag(last_submission_ts,1,(SELECT start FROM contests WHERE id = 2)) OVER (PARTITION BY participation_id ORDER BY last_submission_ts) - lag(last_submission_ts,2,(SELECT start FROM contests WHERE id = 2)) OVER (PARTITION BY participation_id ORDER BY last_submission_ts) AS time_spent_till_switching_to_this_task
+last_submission_ts - lag(last_submission_ts,1,(SELECT start FROM contests WHERE id = 2)) OVER (PARTITION BY participation_id ORDER BY last_submission_ts) AS time_spent_for_the_task
 FROM
 (SELECT 
 participation_id,
 min(user_id) AS user_id,
 min(name) AS name,
 max(timestamp) AS last_submission_ts,
+min(medal) AS medal,
 count(*)
 FROM
 (SELECT t1.*,
@@ -26,12 +28,10 @@ WHEN lag(name) OVER (PARTITION BY participation_id ORDER BY timestamp) = name TH
 ELSE 1
 END AS group_flag
 FROM
-(SELECT s.id as submission_id, s.participation_id, min(p.user_id) AS user_id, MAX(res.score) score, s.timestamp, s.task_id, (select name from tasks where id = s.task_id)
+(SELECT s.id as submission_id, s.participation_id, min(p.user_id) AS user_id, min(p.medal) AS medal, s.timestamp, s.task_id, (select name from tasks where id = s.task_id)
 FROM submissions s 
-INNER JOIN (SELECT p.id AS participation_id, u.id AS user_id FROM participations p INNER JOIN users u ON p.user_id = u.id WHERE u.medals = 1) p
+INNER JOIN (SELECT p.id AS participation_id, u.id AS user_id, u.medals AS medal FROM participations p INNER JOIN users u ON p.user_id = u.id) p
 ON s.participation_id = p.participation_id
-INNER JOIN submission_results res
-ON s.id = res.submission_id
 WHERE s.timestamp >= (SELECT start FROM contests WHERE id = 2)
 AND s.timestamp <= (SELECT stop FROM contests WHERE id = 2)
 AND s.official = TRUE
@@ -39,16 +39,7 @@ GROUP BY s.id
 ORDER BY s.timestamp) subs) t1) t2
 GROUP BY grp, participation_id
 ORDER BY user_id) t3;
-===========================================================
-Example result for user with id 106.
 
- participation_id | user_id | task_name |     last_submission_ts     | consecutive_submission_count | time_spent_till_switching_to_this_task
-------------------+---------+-----------+----------------------------+------------------------------+----------------------------------------
-              209 |     106 | shoes     | 2019-08-06 05:29:02.928639 |                            3 | 00:00:00
-              209 |     106 | rect      | 2019-08-06 06:02:45.456954 |                            3 | 00:29:02.928639
-              209 |     106 | split     | 2019-08-06 07:18:47.123361 |                            6 | 00:33:42.528315
-              209 |     106 | rect      | 2019-08-06 08:55:38.16714  |                           12 | 01:16:01.666407
-              209 |     106 | shoes     | 2019-08-06 09:21:22.838076 |                            1 | 01:36:51.043779
 
 
 
