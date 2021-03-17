@@ -1,7 +1,9 @@
 Insights 3 - 2019:
 
 Finds how much time each participant spend for each task before swithcing to another task.
-================================================================================================================================================================
+DAY 1 -> contest_id = 2
+DAY 2 -> contest_id = 1
+==========================================================================================
 SELECT
 participation_id,
 medal,
