@@ -55,5 +55,12 @@ ORDER BY s.timestamp) subs) t1) t2
 GROUP BY grp, participation_id) t3
 ORDER BY user_id, last_submission_ts;
 
+================================================================================
+outliers - submitted in less than 3 minutes and more than 2 hours
+temp2 is the table created out of the output of the above sql script.
+================================================================================
+select * from temp2 where (now() + time_spent_for_the_task < now() + interval '3' minute) or (now() + time_spent_for_the_task > now() + interval '2' hour) order by time_spent_for_the_task;
+
+
 
 
