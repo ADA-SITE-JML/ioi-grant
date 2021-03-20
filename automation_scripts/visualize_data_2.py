@@ -173,7 +173,7 @@ if __name__ == "__main__":
                 SELECT user_id, task_name, time_spent_for_the_task \
                 FROM temp2 \
                 WHERE medal=1 and contest_id=1 \
-                order by user_id, last_submission_ts;\
+                ORDER BY user_id, last_submission_ts;\
             "
 
     df = postgresql_to_dataframe(conn, query, column_names=None)
