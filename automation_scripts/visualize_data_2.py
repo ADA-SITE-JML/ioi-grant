@@ -151,8 +151,7 @@ def process_graph(results, colors, tasks_colors):
         for y, (x, c) in enumerate(zip(xcenters, widths)):
             if c:
                 ax.text(x, y, str(int(c)), ha='center', va='center', color=text_color)
-# loc='upper center', bbox_to_anchor=(0.5, 1.05),
-#           ncol=3, fancybox=True, shadow=True)
+                
     ax.legend(tasks_colors, ncol=len(tasks_colors.keys()), bbox_to_anchor=(0.5, 0), loc='lower center', fancybox=True, shadow=True, fontsize='medium')
     
     return fig, ax
