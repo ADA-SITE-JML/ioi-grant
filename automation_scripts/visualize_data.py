@@ -33,7 +33,8 @@ def postgresql_to_dataframe(conn, select_query, column_names):
     cursor.close()
 
     # We just need to turn it into a pandas dataframe
-    df = pd.DataFrame(tupples, columns=column_names)
+    df = pd.DataFrame(tupples,  columns=column_names)
+    df = df.dropna()
     return df
 
 
