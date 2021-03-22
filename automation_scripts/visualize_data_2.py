@@ -20,7 +20,7 @@ def connect(params_dic):
     print("Connection successful")
     return conn
 
-def postgresql_to_dataframe(conn, select_query, column_names):
+def postgresql_to_dataframe(conn, select_query):
     """
     Tranform a SELECT query into a pandas dataframe
     """
@@ -34,16 +34,24 @@ def postgresql_to_dataframe(conn, select_query, column_names):
 
     # Naturally we get a list of tupples
     tupples = cursor.fetchall()
+
+    # get column names
+    columns = [desc[0] for desc in cursor.description]
+
+    # close cursor
     cursor.close()
 
     # We just need to turn it into a pandas dataframe
-    df = pd.DataFrame(tupples,  columns=column_names)
+    df = pd.DataFrame(tupples,  columns=columns)
+
+    # drop duplicated rows created by join
+    df = df.T.drop_duplicates().T
 
     # dropping NaN values, basically users withoout medals
     df = df.dropna()
 
     # compute to convert durations to minutes
-    hours, remainder = divmod(df[2].dt.seconds, 3600)
+    hours, remainder = divmod(df['time_spent_for_the_task'].dt.seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
 
     minutes = hours * 60 + minutes
@@ -52,12 +60,11 @@ def postgresql_to_dataframe(conn, select_query, column_names):
     # df['start'] = df[5].dt.strftime('%H:%M:%S')
 
     # add new named colums
-    df['user_id']   = df[0]
-    df['tasks']     = df[1]
+    df['task']      = df['task_name']
     df['duration']  = minutes
 
     # save durations and tasks in a list to preserve the order    
-    df = df.merge(df.groupby("user_id").agg(task_order=('tasks', list), durations=('duration',list)).reset_index())
+    df = df.merge(df.groupby("participation_id").agg(task_order=('task', list), durations=('duration',list)).reset_index())
 
     return df
 
@@ -80,7 +87,7 @@ def prepare_and_visualize(df):
         task_colors = ['#0000ffff', '#006347ff', '#ffa500ff']
 
     # map duration to user ids
-    user_durations_mapping  = {f"User {row['user_id']}": row['durations'] for index, row in df.iterrows()}
+    user_durations_mapping  = {f"{row['full_name']}": row['durations'] for index, row in df.iterrows()}
 
     # map colors to tasks
     task_color_mapping      = {task: color for (task, color) in zip(task_names, task_colors)} 
@@ -131,7 +138,7 @@ def process_graph(results, colors, tasks_colors):
     ax.set_xlabel('Durations (in minute)')
 
     # add a y-label to the axes.
-    ax.set_ylabel('Users')
+    ax.set_ylabel('Medalists')
 
      # add a title to the axes.
     ax.set_title(f"Visualization of the day {GLOBAL_PARAMS['contest_id']} task switch by Gold Medalists on a timeline") 
@@ -161,11 +168,7 @@ def process_graph(results, colors, tasks_colors):
     
     return fig, ax
 
-
 if __name__ == "__main__":
-
-    GLOBAL_PARAMS['contest_id'] = 1
-     
     # connection parameters, yours will be different
     params = {
         "host"      : "192.168.33.115",
@@ -176,21 +179,30 @@ if __name__ == "__main__":
 
     conn = connect(params)
 
+    GLOBAL_PARAMS['contest_id'] = 2
+    GLOBAL_PARAMS['medal'] = 1
+
+    
     query = f"\
-                SELECT user_id, task_name, time_spent_for_the_task \
-                FROM temp2 \
-                WHERE medal=1 and contest_id={GLOBAL_PARAMS['contest_id']}\
-                ORDER BY user_id, last_submission_ts;\
+                SELECT * \
+                FROM sub_stats \
+                INNER JOIN results \
+                ON sub_stats.user_id = results.user_id \
+                WHERE sub_stats.medal={GLOBAL_PARAMS['medal']} and contest_id={GLOBAL_PARAMS['contest_id']}\
+                ORDER BY rank, sub_stats.user_id, last_submission_ts;\
             "
 
-    df = postgresql_to_dataframe(conn, query, column_names=None)
-
+    df = postgresql_to_dataframe(conn, query)
+    
     # eliminate duplicates
-    df_unique = df.groupby(['user_id'], as_index=False).first()
+    df = df.groupby(['participation_id'], as_index=False).first()
 
-    print(df_unique)
+    # make sure order is correct
+    df = df.sort_values(by=['rank', 'abs_score'])
 
-    params = prepare_and_visualize(df_unique)
+    print(df.head())
+
+    params = prepare_and_visualize(df)
 
     process_graph(*params)
 
