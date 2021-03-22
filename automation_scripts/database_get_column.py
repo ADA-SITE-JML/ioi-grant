@@ -1,10 +1,12 @@
 import psycopg2
+import json
 import csv
 
 conn = psycopg2.connect(host='192.168.33.115', user='cmsuser', password='cmspsw', dbname='cmsdb')
 
 failers = []
-with open('medalists.csv') as file:
+medalists_ids_in_file_order = []
+with open('medalists.csv', encoding='utf-8') as file:
         reader = csv.reader(file, delimiter='\t')
         cursor = conn.cursor()
 
@@ -22,19 +24,18 @@ with open('medalists.csv') as file:
                 # if not we try vice versa
                 *first_name, last_name = splitted_ones     
                 first_name = " ".join(first_name)
-            
-            medal = row[1]
-    
-            query_update = f"update users set medals={medal} where first_name='{first_name}' and last_name='{last_name}';"
-            cursor.execute(query_update)
 
-            query = f"select * from users where first_name='{first_name}' and last_name='{last_name}';"
-            cursor.execute(query)
-            result = cursor.fetchall()
+                # make request
+                query = f"select * from users where first_name='{first_name}' and last_name='{last_name}';"
+                cursor.execute(query)
+                result = cursor.fetchall()
+        
 
             if result:
-                print(result)
+                id, *_ = result[0]
+                medalists_ids_in_file_order.append(id)
             else:
+                medalists_ids_in_file_order.append(first_name + " " + last_name)
                 failers.append(first_name + " " + last_name)
 
         print('Commiting changes')
@@ -45,6 +46,11 @@ with open('medalists.csv') as file:
 
 print('Closing connection')
 conn.close()
+
+
+print('Printing IDS:')
+for id in medalists_ids_in_file_order:
+    print(id)
 
 print('Printing failures:')
 for failer in failers:
