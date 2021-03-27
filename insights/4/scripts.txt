@@ -1,0 +1,40 @@
+Insights 4 - 2019 DAY 1:
+Finds how many times, students used a WC request within 45 minutes after asking for:
+- banana
+- apple
+- cupcake
+- chocolate
+- water
+============================================
+DAY 1
+============================================
+SELECT
+tag, 
+SUM(wc_count)
+FROM
+(SELECT 
+unnest(regexp_matches(q.subject, '#(\w{1,})', 'g')) AS tag,
+q.question_timestamp,
+q.participation_id,
+(SELECT COUNT(*) FROM questions x WHERE x.participation_id=q.participation_id AND x.subject LIKE '%#wc%' AND x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute')) AS wc_count
+FROM questions q
+WHERE q.question_timestamp BETWEEN (SELECT start FROM contests WHERE id = 2) AND (SELECT stop FROM contests WHERE id = 2)) t1
+WHERE tag IN ('banana', 'apple', 'cupcake', 'chocolate', 'water') 
+GROUP BY tag;
+
+============================================
+DAY 2
+============================================
+SELECT
+tag, 
+SUM(wc_count)
+FROM
+(SELECT 
+unnest(regexp_matches(q.subject, '#(\w{1,})', 'g')) AS tag,
+q.question_timestamp,
+q.participation_id,
+(SELECT COUNT(*) FROM questions x WHERE x.participation_id=q.participation_id AND x.subject LIKE '%#wc%' AND x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute')) AS wc_count
+FROM questions q
+WHERE q.question_timestamp BETWEEN (SELECT start FROM contests WHERE id = 1) AND (SELECT stop FROM contests WHERE id = 1)) t1
+WHERE tag IN ('banana', 'apple', 'cupcake', 'chocolate', 'water') 
+GROUP BY tag;
