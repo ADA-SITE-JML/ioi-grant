@@ -1,4 +1,4 @@
-Insights 4 - 2019 DAY 1:
+Insights 4 - 2019:
 Finds how many times, students used a WC request within 45 minutes after asking for:
 - banana
 - apple
