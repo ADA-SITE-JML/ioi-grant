@@ -5,36 +5,66 @@ Finds how many times, students used a WC request within 45 minutes after asking 
 - cupcake
 - chocolate
 - water
-============================================
+=============
 DAY 1
-============================================
-SELECT
-tag, 
-SUM(wc_count)
-FROM
-(SELECT 
-unnest(regexp_matches(q.subject, '#(\w{1,})', 'g')) AS tag,
-q.question_timestamp,
-q.participation_id,
-(SELECT COUNT(*) FROM questions x WHERE x.participation_id=q.participation_id AND x.subject LIKE '%#wc%' AND x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute')) AS wc_count
-FROM questions q
-WHERE q.question_timestamp BETWEEN (SELECT start FROM contests WHERE id = 2) AND (SELECT stop FROM contests WHERE id = 2)) t1
-WHERE tag IN ('banana', 'apple', 'cupcake', 'chocolate', 'water') 
-GROUP BY tag;
+=============
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where subject like '%#banana%' and question_timestamp < '2019-08-07';
 
-============================================
+banana - 67
+
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where subject = '#chocolate' and question_timestamp < '2019-08-07';
+
+chocolate - 58
+
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where subject like '%#water%' and question_timestamp < '2019-08-07';
+
+water - 91
+
+
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where subject like '%#cupcake%' and question_timestamp < '2019-08-07';
+
+cupcake - 22
+
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where subject like '%#apple%' and question_timestamp < '2019-08-07';
+
+apple - 8
+
+========
 DAY 2
-============================================
-SELECT
-tag, 
-SUM(wc_count)
-FROM
-(SELECT 
-unnest(regexp_matches(q.subject, '#(\w{1,})', 'g')) AS tag,
-q.question_timestamp,
-q.participation_id,
-(SELECT COUNT(*) FROM questions x WHERE x.participation_id=q.participation_id AND x.subject LIKE '%#wc%' AND x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute')) AS wc_count
-FROM questions q
-WHERE q.question_timestamp BETWEEN (SELECT start FROM contests WHERE id = 1) AND (SELECT stop FROM contests WHERE id = 1)) t1
-WHERE tag IN ('banana', 'apple', 'cupcake', 'chocolate', 'water') 
-GROUP BY tag;
+========
+
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where subject = '#chocolate' and question_timestamp > '2019-08-07';
+
+chocolate - 50
+
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where subject like '%#water%' and question_timestamp > '2019-08-07';
+
+water - 68
+
+
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where subject like '%#cupcake%' and question_timestamp > '2019-08-07';
+
+cupcake - 16
+
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where (subject like '%#apple%' or subject like '%#banana%') and question_timestamp > '2019-08-07';
+
+apple - 55
+
