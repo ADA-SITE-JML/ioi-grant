@@ -84,7 +84,7 @@ def prepare_and_visualize(df):
     else:
         # contest 2
         task_names  = ['rect', 'split', 'shoes']
-        task_colors = ['#0000ffff', '#006347ff', '#ffa500ff']
+        task_colors = ['#ff0000ff', '##A309EFff', '##1D012Cff']
 
     # map duration to user ids
     user_durations_mapping  = {f"{row['full_name']}": row['durations'] for index, row in df.iterrows()}
@@ -189,7 +189,7 @@ if __name__ == "__main__":
                 INNER JOIN results \
                 ON sub_stats.user_id = results.user_id \
                 WHERE sub_stats.medal={GLOBAL_PARAMS['medal']} and contest_id={GLOBAL_PARAMS['contest_id']}\
-                ORDER BY rank, sub_stats.user_id, last_submission_ts;\
+                ORDER BY ranks, sub_stats.user_id, last_submission_ts;\
             "
 
     df = postgresql_to_dataframe(conn, query)
@@ -198,7 +198,7 @@ if __name__ == "__main__":
     df = df.groupby(['participation_id'], as_index=False).first()
 
     # make sure order is correct
-    df = df.sort_values(by=['rank', 'abs_score'])
+    df = df.sort_values(by=['ranks', 'abs_score'])
 
     print(df.head())
 

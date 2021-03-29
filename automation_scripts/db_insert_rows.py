@@ -4,7 +4,7 @@ import csv
 
 conn = psycopg2.connect(host='192.168.33.115', user='cmsuser', password='cmspsw', dbname='cmsdb')
 
-with open('medalist_results.csv', encoding='utf-8') as file:
+with open('C:/Users/abagiyev/Documents/Github/ioi-grant/automation_scripts/medalist_results.csv', encoding='utf-8') as file:
         reader = csv.reader(file, delimiter='\t')
         cursor = conn.cursor()
         
