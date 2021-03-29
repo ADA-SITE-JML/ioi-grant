@@ -6,8 +6,11 @@ DAY 2 -> contest_id = 1
 ==========================================================================================
 SELECT
 participation_id,
-medal,
 user_id,
+team,
+medal,
+abs_score,
+full_name,
 name AS task_name,
 contest_id,
 last_submission_ts,
@@ -17,7 +20,8 @@ WHEN contest_id = 2 THEN last_submission_ts - lag(last_submission_ts,1,(SELECT s
 ELSE last_submission_ts - lag(last_submission_ts,1,(SELECT start FROM contests WHERE id = 1)) OVER (PARTITION BY participation_id ORDER BY last_submission_ts)
 END AS time_spent_for_the_task
 FROM
-(SELECT 
+(SELECT t3.*, rs.abs_score, (select code from teams ts where rs.country = ts.name) as team, rs.full_name
+FROM (SELECT 
 participation_id,
 min(user_id) AS user_id,
 min(name) AS name,
@@ -53,6 +57,8 @@ AND s.official = TRUE
 GROUP BY s.id
 ORDER BY s.timestamp) subs) t1) t2
 GROUP BY grp, participation_id) t3
+LEFT JOIN results rs
+ON t3.user_id = rs.user_id) t4
 ORDER BY user_id, last_submission_ts;
 
 ================================================================================
