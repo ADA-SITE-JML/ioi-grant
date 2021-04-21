@@ -130,7 +130,8 @@ if __name__ == "__main__":
                 SELECT * \
                 FROM users \
                 JOIN results \
-                ON id=user_id; \
+                ON id=user_id \
+                WHERE results.medals != 0; \
             "
 
     df = postgresql_to_dataframe(conn, query)
