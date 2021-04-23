@@ -6,10 +6,10 @@ The repository is a working ground of the ongoing research on 2019 IOI participa
 
 Insights folder consists of 4 directories each of which describes contestant behavior from different aspect. Each folder contains SQL scripts, which can be run on the contest's 
 PostgreSQL database, and the corresponding output data. Names of these folders and a short description for each of them are listed below:
-1.  Contestant requests statistics: Contestant request count for each type of request at intervals of 30 min
-2.  Daily submission statistics
-3.  Solution approaches
-4.  WC requests statistics
+1.  **Contestant requests statistics:** Gets contestant request count for each type of request at intervals of 30 min
+2.  **Daily submission statistics:** There are 4 similar SQL scripts. First one gets submission count for each task at 30 min intervals. Others get count of the submissions which scored more than 0, 20, and 50 at 30 min intervals accordingly. 
+3.  **Solution approaches:** Finds how much time each participant spend for each task before swithcing to another task.
+4.  **WC requests statistics:** Finds how many times, contestants used a WC request within 45 minutes after asking for banana, apple, cupcake, chocolate, and water.
 
 ## DATABASE
 
