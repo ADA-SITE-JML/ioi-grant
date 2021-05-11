@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
+from configs import *
+import pandas as pd
 import numpy as np
 import psycopg2
-import pandas as pd
 import sys
 
 
@@ -17,6 +18,7 @@ def connect(params_dic):
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
         sys.exit(1) 
+        
     print("Connection successful")
     return conn
 
@@ -171,10 +173,10 @@ def process_graph(results, colors, tasks_colors):
 if __name__ == "__main__":
     # connection parameters, yours will be different
     params = {
-        "host"      : "192.168.33.115",
-        "database"  : "cmsdb",
-        "user"      : "cmsuser",
-        "password"  : "cmspsw"
+        "host"      : host,
+        "database"  : dbname,
+        "user"      : user,
+        "password"  : password
     }   
 
     conn = connect(params)

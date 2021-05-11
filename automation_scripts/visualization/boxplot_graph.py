@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
+from configs import *
+import pandas as pd
 import numpy as np
 import psycopg2
-import pandas as pd
 import sys
 
 
@@ -114,11 +115,11 @@ def process_graph(df):
 if __name__ == "__main__":
     # connection parameters, yours will be different
     params = {
-        "host"      : "192.168.33.115",
-        "database"  : "cmsdb",
-        "user"      : "cmsuser",
-        "password"  : "cmspsw"
-    }   
+        "host"      : host,
+        "database"  : dbname,
+        "user"      : user,
+        "password"  : password
+    }
 
     conn = connect(params)
 
@@ -130,7 +131,8 @@ if __name__ == "__main__":
                 SELECT * \
                 FROM users \
                 JOIN results \
-                ON id=user_id; \
+                ON id=user_id \
+                WHERE results.medals != 0; \
             "
 
     df = postgresql_to_dataframe(conn, query)

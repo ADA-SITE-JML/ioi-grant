@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
-import psycopg2
+from configs import *
 import pandas as pd
+import psycopg2
 import sys
 
 def connect(params_dic):
@@ -48,13 +49,13 @@ if __name__ == "__main__":
     except:
         pass
 
-    # Connection parameters, yours will be different
+    # connection parameters, yours will be different
     params = {
-        "host"      : "192.168.33.115",
-        "database"  : "cmsdb",
-        "user"      : "cmsuser",
-        "password"  : "cmspsw"
-    }   
+        "host"      : host,
+        "database"  : dbname,
+        "user"      : user,
+        "password"  : password
+    } 
 
     conn = connect(params)
 
