@@ -5,6 +5,7 @@
         Centered both vertically and horizontally
       </v-col> -->
       <v-form ref="form" v-model="valid" lazy-validation>
+        <h1>Sign In to your account</h1>
         <v-text-field
           v-model="username"
           :rules="usernameRules"
@@ -14,9 +15,14 @@
 
         <v-text-field
           v-model="password"
+          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="passwordRules"
+          :type="show1 ? 'text' : 'password'"
+          name="input-10-1"
           label="password"
-          required
+          hint="At least 5 characters"
+          counter
+          @click:append="show1 = !show1"
         ></v-text-field>
 
         <v-btn
@@ -25,8 +31,9 @@
           class="mr-4"
           @click="validate"
         >
-          Submit
+          Sign In
         </v-btn>
+        <router-link to="/signup">Sign Up</router-link>
       </v-form>
     </v-row>
   </v-container>
@@ -35,6 +42,7 @@
 <script>
 export default {
   data: () => ({
+    show1: false,
     valid: true,
     username: "",
     usernameRules: [

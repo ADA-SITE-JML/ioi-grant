@@ -4,7 +4,10 @@
       <!-- <v-col cols="12" sm="4">
         Centered both vertically and horizontally
       </v-col> -->
+
       <v-form ref="form" v-model="valid" lazy-validation>
+        <h1>Create an account</h1>
+        <!-- <h1>Sign Up</h1> -->
         <v-text-field
           v-model="username"
           :rules="usernameRules"
@@ -14,9 +17,26 @@
 
         <v-text-field
           v-model="password"
+          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="passwordRules"
+          :type="show1 ? 'text' : 'password'"
+          name="input-10-1"
           label="password"
-          required
+          hint="At least 5 characters"
+          counter
+          @click:append="show1 = !show1"
+        ></v-text-field>
+
+        <v-text-field
+          v-model="reEnterPassword"
+          :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+          :rules="reEnterPasswordRules"
+          :type="show2 ? 'text' : 'password'"
+          name="input-10-1"
+          label="re-enter password"
+          hint="At least 5 characters"
+          counter
+          @click:append="show2 = !show2"
         ></v-text-field>
 
         <v-btn
@@ -25,8 +45,10 @@
           class="mr-4"
           @click="validate"
         >
-          Submit
+          Sign Up
         </v-btn>
+
+        <router-link to="/signin">Sign In</router-link>
       </v-form>
     </v-row>
   </v-container>
@@ -35,6 +57,8 @@
 <script>
 export default {
   data: () => ({
+    show1: false,
+    show2: false,
     valid: true,
     username: "",
     usernameRules: [
@@ -46,8 +70,13 @@ export default {
       (v) => !!v || "password is required",
       (v) => (v && v.length >= 5) || "Name must be greater than 5 characters",
     ],
+    reEnterPassword: "",
   }),
-
+  computed: {
+    reEnterPasswordRules() {
+      return [(v) => v === this.password || "Entered passwords do not match"];
+    },
+  },
   methods: {
     validate() {
       this.$refs.form.validate();
