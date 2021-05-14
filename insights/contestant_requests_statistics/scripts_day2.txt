@@ -1,5 +1,7 @@
-Insights 2 - 2019 DAY 2:
-1. contestant request count for each type of request for each 30 min interval
+Contestant Requests - 2019 DAY 2:
+=============================
+Finds the number of the requests made by contestants every 30-minute, grouped by the request type
+=============================
 SELECT 
 date_trunc('days', q.question_timestamp) + (date_part('hour', q.question_timestamp::time - '20 min'::interval) || ' hour')::interval + '20 min'::interval + (((date_part('minute', q.question_timestamp::time - '20 min'::interval)::integer / 30::integer)*30::integer) || ' minutes')::interval as time_grp,
 unnest(regexp_matches(q.subject, '#(\w{1,})', 'g')) as tags,
@@ -18,3 +20,35 @@ WHERE q.question_timestamp >= (SELECT start FROM contests WHERE id = 1)
 AND q.question_timestamp <= (SELECT stop FROM contests WHERE id = 1)
 GROUP BY time_grp, tags
 ORDER BY time_grp;
+
+
+
+*******************************************************************************************************
+Finds how many times, students used a WC request within 45 minutes after asking for:
+- banana
+- apple
+- cupcake
+- chocolate
+- water
+=============================
+
+Chocolate:
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where subject = '#chocolate' and question_timestamp > '2019-08-07';
+
+Water:
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where subject like '%#water%' and question_timestamp > '2019-08-07';
+
+Cupcake:
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where subject like '%#cupcake%' and question_timestamp > '2019-08-07';
+
+Apple/Banana:
+select sum((select count(*) from questions x where x.participation_id=q.participation_id and x.subject like '%#wc%' and x.question_timestamp > q.question_timestamp AND x.question_timestamp <= q.question_timestamp + (45 * interval '1 minute'))) cnt
+from questions q 
+where (subject like '%#apple%' or subject like '%#banana%') and question_timestamp > '2019-08-07';
+
