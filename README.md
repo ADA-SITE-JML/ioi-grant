@@ -4,10 +4,9 @@ The repository is a working ground of the ongoing research on 2019 IOI participa
 
 ## INSIGHTS
 
-Insights folder consists of 4 directories each of which describes contestant behavior from different aspect. Each folder contains SQL scripts, which can be run on the contest's 
-PostgreSQL database, and the corresponding output data. Names of these folders and a short description for each of them are listed below:
-1.  **Contestant requests statistics:** Gets contestant request count for each type of request at intervals of 30 min
-2.  **Daily submission statistics:** There are 4 similar SQL scripts. First one gets submission count for each task at 30 min intervals. Others get count of the submissions which scored more than 0, 20, and 50 at 30 min intervals accordingly. 
+This part of the research introduces the insights on IOI 2019 data, that start as general statistics and then floowed by specific targeted analysis, accompanied with the findings. All insights and short description for each of them are provided in the list below:
+1.  **Submission Dynamics:** Computes the number of submissions in a 30-minute interval and visualizes them on a separate diagram for each task. Each diagram shows the number of totals (orange line) and successful (gray line) submissions. Any submission scored more than 0 is considered as successful. So the gap between the lines shows the submissions that did not score anything.
+2.  **Contestant requests statistics:** Finds the number of the requests made by contestants every 30-minute, grouped by the request type.
 3.  **Solution approaches:** Finds how much time each participant spend for each task before swithcing to another task.
 4.  **Country based performance:** 
 
