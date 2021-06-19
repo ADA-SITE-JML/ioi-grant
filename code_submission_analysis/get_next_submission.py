@@ -12,12 +12,19 @@ import sys
 # if __name__ == "__main__":
 #     test()
 
-conn = psycopg2.connect(database="cmsdb", user="cmsuser",
-                        password="cmspsw", host="192.168.33.115", port="5432")
+# load config
+with open("./csa.conf", 'rt', encoding='utf-8') as f:
+    conf = json.load(f)
+
+db_conf = conf["db_connection"]
+submissions_dir = conf["submissions_dir"]
+
+conn = psycopg2.connect(database=db_conf["database"], user=db_conf["user"],
+                        password=db_conf["password"], host=db_conf["host"], port=db_conf["port"])
 
 cur = conn.cursor()
 
-filename = 'last_sub_id'
+filename = conf["state_storage_file"]
 with open(filename, 'a+b') as file:
     try:
         file.seek(0)
@@ -33,7 +40,6 @@ with open(filename, 'a+b') as file:
                 ORDER BY timestamp ASC LIMIT 1")
             current_submission = cur.fetchall()[0]
             username = current_submission[7]
-            data_dir = f"/var/local/lib/cms/submissions/{username}"
             # check the participant whom the curent submission belongs to if have submitted another submission for the same task before the current submission
             # if yes return filesystem address for both of them and some other extra info regarding the submissions
             # if not return only the current submission
@@ -63,7 +69,7 @@ with open(filename, 'a+b') as file:
                             'task_id': current_submission[2],
                             'timestamp': str(current_submission[3]),
                             'language': current_submission[4],
-                            'file_path': os.path.join(data_dir, f"'{current_submission[3]}'")
+                            'file_path': os.path.join(submissions_dir, username, f"'{current_submission[3]}'")
                         },
                         'previous_submission': {
                             'id': prev_submission[0],
@@ -71,7 +77,7 @@ with open(filename, 'a+b') as file:
                             'task_id': prev_submission[2],
                             'timestamp': str(prev_submission[3]),
                             'language': prev_submission[4],
-                            'file_path': os.path.join(data_dir, f"'{prev_submission[3]}'")
+                            'file_path': os.path.join(submissions_dir, username, f"'{prev_submission[3]}'")
                         }
                     },
                     sys.stdout
@@ -85,7 +91,7 @@ with open(filename, 'a+b') as file:
                             'task_id': current_submission[2],
                             'timestamp': str(current_submission[3]),
                             'language': current_submission[4],
-                            'file_path': os.path.join(data_dir, f"'{current_submission[3]}'")
+                            'file_path': os.path.join(submissions_dir, username, f"'{current_submission[3]}'")
                         }
                     },
                     sys.stdout
@@ -101,7 +107,6 @@ with open(filename, 'a+b') as file:
                         ")
             current_submission = cur.fetchall()[0]
             username = current_submission[7]
-            data_dir = f"/var/local/lib/cms/submissions/{username}"
             json.dump(
                 {
                     'current_submission': {
@@ -110,7 +115,7 @@ with open(filename, 'a+b') as file:
                         'task_id': current_submission[2],
                         'timestamp': str(current_submission[3]),
                         'language': current_submission[4],
-                        'file_path': os.path.join(data_dir, f"'{current_submission[3]}'")
+                        'file_path': os.path.join(submissions_dir, username, f"'{current_submission[3]}'")
                     }
                 },
                 sys.stdout
