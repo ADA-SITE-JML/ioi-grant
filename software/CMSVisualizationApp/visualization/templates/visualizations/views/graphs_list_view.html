@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+    {% for graph in graphs %}
+
+        {% if graph.active %}
+
+            <div id="graph_{{ graph.pk }}" class="card shadow-sm {% if user.is_authenticated and user.is_staff %}draggable{% endif %}" data-snap-tolerance="{{ graph.snap_tolerance }}" style="top: {{ graph.top }}; left: {{ graph.left }}; width: {{ graph.card_width }}; height: {{ graph.card_height }}; position:absolute;">
+
+                <img src="{{ graph.img_base64 }}" class="card-img-top" alt="{{ graph.title }}" width="100%" height="100%" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ graph.description }}">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">{{ graph.title }}</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group graph-table-buttons">
+                            <a class="btn btn-sm btn-outline-secondary show-graph-btn" href="{{ graph.img_base64 }}" data-toggle="lightbox" data-type="image" data-title="{{ graph.title }}" data-footer="{{ graph.description }}" data-max-width="1500" data-width="1000" data-height="1000">View as Graph</a>
+                            <a class="btn btn-sm btn-outline-secondary show-table-btn" href="" data-toggle="modal" data-target="#exampleModalCenter" data-title="{{ graph.title }}" data-table="{{ graph.table }}" >View as Table</a>
+                            {% if user.is_authenticated and user.is_staff %}
+                                <a class="btn btn-sm btn-outline-secondary show-table-btn" href="{% url 'admin:visualization_graphs_change' graph.pk %}">Update Graph</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <button id='layout_save' type="button" class="btn btn-primary" style="position:fixed; bottom:45px; right:40px;">Save Layout</button>
+    {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:80%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block graphs %}
+    <script>
+        $(function () {
+
+            $('.draggable').draggable({
+                {#containment: "parent",#}
+                snap: true,
+                snapTolerance: 20,
+            });
+
+            $('.graph-table-buttons .show-table-btn').click(function () {
+                let title = $(this).data('title');
+                let table = $(this).data('table');
+                $(".modal-title").html(title);
+                $(".modal-body").html(table);
+
+                let df_table = $('.dataframe');
+
+                df_table.addClass('table table-striped table-bordered');
+
+                df_table.DataTable({
+                    "scrollX": true,
+                    "scrollY": "300px",
+                    "scrollCollapse": true,
+                    "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
+                    responsive: true
+                });
+
+                $.fn.dataTable.ext.errMode = 'none';
+
+                $('table').css('width', '100%');
+                $('.dataTables_scrollHeadInner').css('width', '100%');
+
+            });
+
+
+
+            $('#layout_save').click(function () {
+                let data = []
+
+                $( ".draggable" ).each(function( index, value ) {
+                    let element = $(value);
+                    data.push(
+                        {
+                            'id': element.attr('id').split('_')[1],
+                            'top': element.css('top'),
+                            'left': element.css('left')
+                        }
+                    );
+                });
+
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: "{% url 'post_layout' %}",
+                    data: {'data': data},
+                    success: function (response) {},
+                    error: function (response) {
+                        alert(response["error"]);
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+{% endblock %}

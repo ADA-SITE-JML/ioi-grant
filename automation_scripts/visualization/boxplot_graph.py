@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from configs import *
+# from configs import *
 import pandas as pd
 import numpy as np
 import psycopg2
@@ -115,10 +115,10 @@ def process_graph(df):
 if __name__ == "__main__":
     # connection parameters, yours will be different
     params = {
-        "host"      : host,
-        "database"  : dbname,
-        "user"      : user,
-        "password"  : password
+        "host"      : '192.168.33.115',
+        "database"  : 'cmsdb',
+        "user"      : 'cmsuser',
+        "password"  : 'cmspsw'
     }
 
     conn = connect(params)

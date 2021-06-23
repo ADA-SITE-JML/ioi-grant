@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-lg navbar-dark rounded px-5" style="background-color: {{ navbar.bg_color }}">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{{ logo.image.url }}" width="{{ logo.width }}" height="{{ logo.height }}" class="d-inline-block align-top" alt="{{ logo.alt }}">
+           {% if logo.side_text %} <div class="d-inline-block align-middle">{{ logo.side_text }}</div> {% endif %}
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end font-weight-bold" id="navbarsExample09">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'graphs' %}" style="color: {{ navbar.font_color }}">Graphs</a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="{% url 'about' %}" style="color: {{ navbar.font_color }}">About</a>
+                </li>
+
+                <li class="nav-item">
+                      <a class="nav-link" href="{% url 'admin:index' %}" style="color: {{ navbar.font_color }}">Admin Panel</a>
+                </li>
+{#                </li>#}
+            </ul>
+                    </div>
+        </div>
+</nav>

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block about_css %}
+
+    <style>
+        {{ about.css |safe }}
+    </style>
+
+{% endblock %}
+
+{% block main %}
+
+    <div>
+        {{ about.html |safe }}
+    </div>
+
+{% endblock %}
